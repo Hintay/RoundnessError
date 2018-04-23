@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RoundnessError", "RoundnessError\RoundnessError.vcxproj", "{6BEEE4BF-9FFF-434F-A8B3-496C6BD699C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BEEE4BF-9FFF-434F-A8B3-496C6BD699C4}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{6BEEE4BF-9FFF-434F-A8B3-496C6BD699C4}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{6BEEE4BF-9FFF-434F-A8B3-496C6BD699C4}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{6BEEE4BF-9FFF-434F-A8B3-496C6BD699C4}.Release|VisualGDB.Build.0 = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFA0DD41-06F0-4E6F-84F8-CFC2952879BC}
+	EndGlobalSection
+EndGlobal
