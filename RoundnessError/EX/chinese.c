@@ -1,3 +1,12 @@
+/*!
+* @file	EX\chinese.c.
+*
+* @brief	通用中文字模显示
+*
+* @author	Hintay
+* @date		2018/4/21
+*/
+
 #include "chinese.h"
 #include "chfont.h"
 #include "lcd.h"
@@ -13,9 +22,9 @@
  *
  * @param	x			  	显示坐标 x.
  * @param	y			  	显示坐标 y.
- * @param	index		  	Zero-based index of the.
+ * @param	index		  	字体数组中的索引
  * @param	font_array[16]	字体数组名
- * @param	font_size	  	Size of the font.
+ * @param	font_size	  	字体大小，应与字模匹配
  */
 
 void show_chinese_char(u16 x, u16 y, u8 index, const u8(*font_array)[16], u8 font_size)
@@ -26,7 +35,7 @@ void show_chinese_char(u16 x, u16 y, u8 index, const u8(*font_array)[16], u8 fon
 
 	// 若要支持大号字体需要使用 u16
 	font_byte = ceil(font_size / 8.0) * font_size;		// 字体字节
-	font_byte = font_byte / 8 * 8;							// 修正 PCtoLCD 的 BUG
+	font_byte = font_byte / 8 * 8;						// 修正 PCtoLCD 的 BUG
 	font_subarray_count = ceil(font_byte / 16.0);		// 字体子数组个数
 
 	p = font_array[index * font_subarray_count];	// 获取指针
@@ -47,6 +56,21 @@ void show_chinese_char(u16 x, u16 y, u8 index, const u8(*font_array)[16], u8 fon
 		}
 	}
 }
+
+/*!
+ * @fn	void show_chinese_string(u16 x, u16 y, const u8 index_list[], const u8(*font_array)[16], u8 font_size)
+ *
+ * @brief	根据索引显示中文字符串
+ *
+ * @author	Hintay
+ * @date	2018/4/21
+ *
+ * @param 		  	x		  	显示坐标 x.
+ * @param 		  	y		  	显示坐标 y.
+ * @param 		  	index_list	字符串索引
+ * @param [in,out]	font_array	字体数组名
+ * @param 		  	font_size 	字体大小，应与字模匹配
+ */
 
 void show_chinese_string(u16 x, u16 y, const u8 index_list[], const u8(*font_array)[16], u8 font_size)
 {

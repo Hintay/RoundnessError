@@ -33,40 +33,9 @@
  
 
 //////////////////////////////////////////////////////////////////
-//加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
-#if 0
-#pragma import(__use_no_semihosting)             
-//标准库需要的支持函数                 
-struct __FILE 
-{ 
-	int handle; 
-}; 
-
-FILE __stdout;       
-//定义_sys_exit()以避免使用半主机模式    
-void _sys_exit(int x)
-{ 
-	x = x;
-} 
-//重定义fputc函数 
-int fputc(int ch, FILE *f)
-{      
-	while(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET); 
-    USART_SendData(USART1,(uint8_t)ch);   
-	return ch;
-}
-
-#endif 
-
 // 重写 printf 至串口 - gcc 编译 (Newlib-nano)
+// 注意：需要 \n 作为结束符
 #ifdef __GNUC__
-/*__attribute__((used)) int __io_putchar(int ch)
-{
-while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-USART_SendData(USART1, (uint8_t)ch);
-return ch;
-}*/
-
 __attribute__((used)) int _write(int fd, char *ptr, size_t len)
 {
 	for (size_t i = 0; i<len; i++)
@@ -76,6 +45,33 @@ __attribute__((used)) int _write(int fd, char *ptr, size_t len)
 	}
 	return len;
 }
+
+#else
+
+//加入以下代码,支持printf函数,而不需要选择use MicroLIB
+#if 1
+#pragma import(__use_no_semihosting)             
+//标准库需要的支持函数                 
+struct __FILE
+{
+	int handle;
+};
+
+FILE __stdout;
+//定义_sys_exit()以避免使用半主机模式    
+void _sys_exit(int x)
+{
+	x = x;
+}
+//重定义fputc函数 
+int fputc(int ch, FILE *f)
+{
+	while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+	USART_SendData(USART1, (uint8_t)ch);
+	return ch;
+}
+
+#endif 
 
 #endif
 

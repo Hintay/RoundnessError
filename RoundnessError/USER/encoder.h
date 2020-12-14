@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef __ENCODER_H
 #define __ENCODER_H
 
@@ -8,8 +8,8 @@ void Encoder_Init(void);
 
 extern int encoder_count;
 
-extern double angle_shifted_base95[360];	// ±£´æÃ¿¶ÈµÄÎ»ÒÆÖµ
+extern double angle_shifted_base95[360];	// ä¿å­˜æ¯åº¦çš„ä½ç§»å€¼
  
-#define EDGE_TIMES 12960 // Âö³åÊı
+#define EDGE_TIMES 12960 // è„‰å†²æ•°
 
 #endif

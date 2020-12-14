@@ -1,4 +1,4 @@
-#include "main.h"
+ï»¿#include "main.h"
 #include "led.h"
 #include "delay.h"
 #include "lcd.h"
@@ -7,7 +7,8 @@
 #include "shifted.h"
 #include "encoder.h"
 
-#if 1
+/// æµ‹è¯•æ¨¡å¼ï¼Œéç«èµ›ä½¿ç”¨ ///
+#if TEST_MODE
 void show_page_debug()
 {
 	show_lcd_select_page(debug_page);
@@ -15,7 +16,7 @@ void show_page_debug()
 
 void show_page_adc()
 {
-	/// ADC ÏÔÊ¾ ///
+	/// ADC æ˜¾ç¤º ///
 	u16 adcx;
 	char temp_text[20];
 	u8 loop_flag = 1;
@@ -33,22 +34,22 @@ void show_page_adc()
 			sprintf(temp_text, "ADC: %-4d", adcx);
 			LCD_ShowString(60, 50, 200, 16, 16, temp_text);
 
-			// ÏÔÊ¾µçÑ¹Öµ
+			// æ˜¾ç¤ºç”µå‹å€¼
 			sprintf(temp_text, "ADC (V): %0.3f", adcx*(3.3 / 4095));
 			LCD_ShowString(60, 70, 200, 16, 16, temp_text);
 
-			// ÏÔÊ¾Î»ÒÆÖµ
-			LCD_ShowString(60, 90, 200, 16, 16, "Shifted (mm):"); 
-			sprintf(temp_text, "      %2.6f", get_shifted_value(adcx));
-			LCD_ShowString(60, 110, 200, 16, 16, temp_text);
+			// æ˜¾ç¤ºä½ç§»å€¼
+			/*LCD_ShowString(60, 90, 200, 16, 16, "Shifted (mm):"); 
+			sprintf(temp_text, "      %2.6f", get_relative_shifted_value(adcx));
+			LCD_ShowString(60, 110, 200, 16, 16, temp_text);*/
 
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
 			if (kv)
 			{
 				switch (kv)
 				{
-				case KEY_LEFT:	// ·µ»ØÖ÷½çÃæ
+				case KEY_LEFT:	// è¿”å›ä¸»ç•Œé¢
 					loop_flag = 0;
 					break;
 				default: break;
@@ -63,8 +64,8 @@ void show_page_counter()
 	u8 kv, loop_flag = 1;
 	char temp_text[20];
 
-	TIM_SetCounter(TIM4, 0);	// ÇåÁã
-	TIM_Cmd(TIM4, ENABLE);
+	TIM_SetCounter(TIM5, 0);	// æ¸…é›¶
+	TIM_Cmd(TIM5, ENABLE);
 
 	POINT_COLOR = BLUE;
 
@@ -74,20 +75,20 @@ void show_page_counter()
 		{
 			timerFlag = 0;
 
-			// ÏÔÊ¾¼ÆÊıÖµ
-			sprintf(temp_text, "Count: %6d", TIM4->CNT);
+			// æ˜¾ç¤ºè®¡æ•°å€¼
+			sprintf(temp_text, "Count: %6d", TIM5->CNT);
 			LCD_ShowString(60, 70, 200, 16, 16, temp_text);
-			// ÏÔÊ¾²âÊÔÖµ
+			// æ˜¾ç¤ºæµ‹è¯•å€¼
 			sprintf(temp_text, "Test: %6d", encoder_count);
 			LCD_ShowString(60, 90, 200, 16, 16, temp_text);
 
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
 			if (kv)
 			{
 				switch (kv)
 				{
-				case KEY_LEFT:	// ·µ»ØÖ÷½çÃæ
+				case KEY_LEFT:	// è¿”å›ä¸»ç•Œé¢
 					loop_flag = 0;
 					break;
 				default: break;
@@ -96,8 +97,8 @@ void show_page_counter()
 		}
 	}
 
-	TIM_Cmd(TIM4, DISABLE);
-	TIM_SetCounter(TIM4, 0);
+	TIM_Cmd(TIM5, DISABLE);
+	TIM_SetCounter(TIM5, 0);
 }
 
 void show_page_roundness_test()
@@ -109,7 +110,7 @@ void show_page_roundness_test()
 
 	test_calculate_roundness_error();
 
-	// ÏÔÊ¾¼ÆÊıÖµ
+	// æ˜¾ç¤ºè®¡æ•°å€¼
 	sprintf(temp_text, "u1: %6.6f", re_dev.u1);
 	LCD_ShowString(60, 70, 200, 16, 16, temp_text);
 	sprintf(temp_text, "u2: %6.6f", re_dev.u2);
@@ -129,13 +130,13 @@ void show_page_roundness_test()
 		{
 			timerFlag = 0;
 
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
 			if (kv)
 			{
 				switch (kv)
 				{
-				case KEY_LEFT:	// ·µ»ØÖ÷½çÃæ
+				case KEY_LEFT:	// è¿”å›ä¸»ç•Œé¢
 					loop_flag = 0;
 					break;
 				default: break;
@@ -177,7 +178,7 @@ void show_page_settings()
 	u8 cur_pos_row = 0;
 	bool is_change_mod = false;
 
-	// ÏÔÊ¾±êÌâ
+	// æ˜¾ç¤ºæ ‡é¢˜
 	POINT_COLOR = DARKBLUE;
 	show_chinese_string( 72, 30, chinese_menu_index[1], regular_font_24, 24 );
 
@@ -191,11 +192,11 @@ void show_page_settings()
 		{
 			timerFlag = 0;
 
-			//adcx = Get_Adc_Average(ADC_Channel_1, 10);	// ²É ADC Æ½¾ùÖµ
+			//adcx = Get_Adc_Average(ADC_Channel_1, 10);	// é‡‡ ADC å¹³å‡å€¼
 
-			// ÏÔÊ¾Î»ÒÆÖµ
+			// æ˜¾ç¤ºä½ç§»å€¼
 			/*LCD_ShowString(40, 70, 200, 16, 16, "Current Shifted (mm):");
-			sprintf(temp_text, "  %2.6f", get_shifted_value(adcx) - get_shifted_value(saved_info.base_shifted_adc));
+			sprintf(temp_text, "  %2.6f", get_relative_shifted_value(adcx) - get_relative_shifted_value(saved_info.base_shifted_adc));
 			LCD_ShowString(40, 90, 200, 16, 16, temp_text);*/
 
 			//LCD_ShowString(40, 110, 200, 16, 16, "Base Shifted (mm):");
@@ -207,28 +208,28 @@ void show_page_settings()
 			//LCD_ShowString(40, 130, 200, 16, 16, temp_text);
 			//show_nums_from_buff(60, 130, float_buff);
 
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
 			if (kv)
 			{
 				switch (kv)
 				{
 				case KEY_RIGHT:
-				case KEY_LEFT:	// ×óÒÆ»òÓÒÒÆ
+				case KEY_LEFT:	// å·¦ç§»æˆ–å³ç§»
 					if(is_change_mod)
 					{
 						cur_pos_column = (settings_items[cur_pos_row].show_len + cur_pos_column + (kv == KEY_RIGHT ? 1 : -1)) % settings_items[cur_pos_row].show_len;
-						show_page_settings_numbers(cur_pos_row, cur_pos_column+1);	// Ë¢ĞÂ
+						show_page_settings_numbers(cur_pos_row, cur_pos_column+1);	// åˆ·æ–°
 					}
 					else if(cur_pos_row == settings_row)
-					{	// ×îºóÒ»ĞĞ Ö»ÓĞÁ½¸ö È·ÈÏ/È¡Ïû
+					{	// æœ€åä¸€è¡Œ åªæœ‰ä¸¤ä¸ª ç¡®è®¤/å–æ¶ˆ
 						cur_pos_column = (2 + cur_pos_column + (kv == KEY_RIGHT ? 1 : -1)) % 2;
 					}
 					break;
 				case KEY_UP:
-				case KEY_DOWN:	// ÉÏÒÆ»òÏÂÒÆ
+				case KEY_DOWN:	// ä¸Šç§»æˆ–ä¸‹ç§»
 					if(is_change_mod)
-					{	// ĞŞ¸ÄÄ£Ê½
+					{	// ä¿®æ”¹æ¨¡å¼
 						u32 temp_u32 = *settings_items[cur_pos_row].vaule * settings_items[cur_pos_row].magnification;
 						const u8 current_num = get_settings_num_by_index(temp_u32, cur_pos_row, cur_pos_column );
 						if(kv == KEY_UP)
@@ -247,28 +248,28 @@ void show_page_settings()
 						}
 
 						*settings_items[cur_pos_row].vaule = temp_u32 / (double)settings_items[cur_pos_row].magnification;
-						show_page_settings_numbers(cur_pos_row, cur_pos_column + 1);	// Ë¢ĞÂÊıÖµ
+						show_page_settings_numbers(cur_pos_row, cur_pos_column + 1);	// åˆ·æ–°æ•°å€¼
 					}
 					else
-					{	// ÇĞ»»Ñ¡Ôñ
-						//cur_pos_column = 0; // ÖØÖÃÁĞË÷ÒıÎª0
+					{	// åˆ‡æ¢é€‰æ‹©
+						//cur_pos_column = 0; // é‡ç½®åˆ—ç´¢å¼•ä¸º0
 						cur_pos_row = (settings_row + 1 + cur_pos_row + (kv == KEY_DOWN ? 1 : -1)) % (settings_row + 1);
-						show_page_settings_numbers(cur_pos_row, 0);	// Ë¢ĞÂ¸ßÁÁ¿ò
+						show_page_settings_numbers(cur_pos_row, 0);	// åˆ·æ–°é«˜äº®æ¡†
 					}
 					
 					break;
 				case KEY_ENTER:
-					// ÖĞ¼ä¼üÖ»ÔÚ È·ÈÏ ºÍ È¡Ïû ¼°½øÈëĞŞ¸ÄÄ£Ê½Ê±Ê¹ÓÃ
-					if(cur_pos_row < settings_row)	// ½øÈë»òÈ¡ÏûĞŞ¸ÄÄ£Ê½
+					// ä¸­é—´é”®åªåœ¨ ç¡®è®¤ å’Œ å–æ¶ˆ åŠè¿›å…¥ä¿®æ”¹æ¨¡å¼æ—¶ä½¿ç”¨
+					if(cur_pos_row < settings_row)	// è¿›å…¥æˆ–å–æ¶ˆä¿®æ”¹æ¨¡å¼
 					{
 						is_change_mod = !is_change_mod;
 						cur_pos_column = 0;
-						show_page_settings_numbers(cur_pos_row, is_change_mod ? cur_pos_column + 1 : 0);	// Ë¢ĞÂÊıÖµ
+						show_page_settings_numbers(cur_pos_row, is_change_mod ? cur_pos_column + 1 : 0);	// åˆ·æ–°æ•°å€¼
 					}
 					else
-					{ // µã»÷È·ÈÏ»òÈ¡Ïû
+					{ // ç‚¹å‡»ç¡®è®¤æˆ–å–æ¶ˆ
 						if(cur_pos_column == 0)
-						{	// µã»÷È·ÈÏ - ¼ÆËã²¢±£´æĞÅÏ¢
+						{	// ç‚¹å‡»ç¡®è®¤ - è®¡ç®—å¹¶ä¿å­˜ä¿¡æ¯
 							save_info();
 						}
 						loop_flag = 0;
@@ -281,14 +282,22 @@ void show_page_settings()
 	}
 }
 
-#endif
+#else
 
-#define FINAL_PAGE_START_X	20
-#define FINAL_PAGE_START_Y	30
+/*!
+ * @fn	void show_contest_page_settings_item(u8 cur_row)
+ *
+ * @brief	ç«èµ›ä½¿ç”¨ - è®¾å®šç•Œé¢é€‰é¡¹ï¼ˆåˆå§‹åŒ–åŠåˆ·æ–°ç”¨ï¼‰
+ *
+ * @author	Hintay
+ * @date	2018/4/21
+ *
+ * @param	cur_row	å½“å‰è¡Œä½ç½®
+ */
 
-void show_final_page_settings_item(u8 cur_row)
+void show_contest_page_settings_item(u8 cur_row)
 {
-	u8 x = FINAL_PAGE_START_X, y = FINAL_PAGE_START_Y;
+	u16 x = FINAL_PAGE_START_X, y = FINAL_PAGE_START_Y;
 	char temp_text[20];
 
 	if (cur_row == 0)
@@ -298,14 +307,14 @@ void show_final_page_settings_item(u8 cur_row)
 	y += 30;
 	LCD_ShowString(FINAL_PAGE_START_X, y, 200, 16, 16, "95mm");		// 95mm
 	x += 34;
-	show_chinese_string(x, y, output_index[1], output_font, 16);	// ±ê×¼Ô²Éè¶¨
+	show_chinese_string(x, y, output_index[1], contest_font, 16);	// æ ‡å‡†åœ†è®¾å®š
 	x += output_index[1][0] * 16 + 8;
-	show_chinese_char(x, y, 0, block_font, 16);		// ¡õ
-	x += 16;
-	LCD_ShowChar(x, y, '/', 16, 0);
-	x += 8;
-	show_chinese_char(x, y, 1, block_font, 16);		// ¡ö
-	x = FINAL_PAGE_START_X;		// x ¸´Î»
+	show_chinese_char(x, y, is_set_95, block_font, 16);		// â–¡
+	//x += 16;
+	//LCD_ShowChar(x, y, '/', 16, 0);
+	//x += 8;
+	//show_chinese_char(x, y, 1, block_font, 16);		// â– 
+	x = FINAL_PAGE_START_X;		// x å¤ä½
 
 	if (cur_row == 1)
 		POINT_COLOR = BLACK;
@@ -314,116 +323,82 @@ void show_final_page_settings_item(u8 cur_row)
 	y += 30;
 	LCD_ShowString(FINAL_PAGE_START_X, y, 200, 16, 16, "105mm");		// 95mm
 	x += 42;
-	show_chinese_string(x, y, output_index[1], output_font, 16);	// ±ê×¼Ô²Éè¶¨
+	show_chinese_string(x, y, output_index[1], contest_font, 16);	// æ ‡å‡†åœ†è®¾å®š
 	x += output_index[1][0] * 16;
-	show_chinese_char(x, y, 0, block_font, 16);		// ¡õ
-	x += 16;
-	LCD_ShowChar(x, y, '/', 16, 0);
-	x += 8;
-	show_chinese_char(x, y, 1, block_font, 16);		// ¡ö
-	x = FINAL_PAGE_START_X;		// x ¸´Î»
+	show_chinese_char(x, y, is_set_105, block_font, 16);		// â–¡
+	//x += 16;
+	//LCD_ShowChar(x, y, '/', 16, 0);
+	//x += 8;
+	//show_chinese_char(x, y, 1, block_font, 16);		// â– 
+	x = FINAL_PAGE_START_X;		// x å¤ä½
 
 	if (cur_row == 2)
 		POINT_COLOR = BLACK;
 	else
 		POINT_COLOR = BLUE;
 	y += 30;
-	show_chinese_string(x, y, output_index[2], output_font, 16);
+	show_chinese_string(x, y, output_index[2], contest_font, 16);
 	x += output_index[2][0] * 16;
-	sprintf(temp_text, "%1.1f rpm", motor_rpm);
+	sprintf(temp_text, "%1.1f rpm", saved_info.motor_rpm / 10.0);
 	LCD_ShowString(x, y, 200, 16, 16, temp_text);
 
 	POINT_COLOR = BLUE;
 }
 
-void show_final_page_settings()
+/*!
+ * @fn	void show_contest_page_settings()
+ *
+ * @brief	ç«èµ›ä½¿ç”¨ - è®¾å®šç•Œé¢
+ *
+ * @author	Hintay
+ * @date	2018/4/21
+ */
+
+void show_contest_page_settings()
 {
-	bool loop_flag = true, is_change_mod = false, is_biling = false, can_biling = true;
+	bool loop_flag = true, is_blinking = false /* é—ªçƒçŠ¶æ€æ ‡å¿—ä½ */, is_change_mode = true /* æ˜¯å¦å¤„äºä¿®æ”¹æ¨¡å¼å¯é—ªçƒ */;
 	u8 kv, cur_row = 0;
 	char temp_text[20];
+	u16 y;
 
-	/// ÏÔÊ¾ÎÄ×Ö ///
-	show_chinese_string(FINAL_PAGE_START_X, FINAL_PAGE_START_Y, output_index[0], output_font, 16);	// ²ÎÊıÉè¶¨
+	/// æ˜¾ç¤ºæ–‡å­— ///
+	show_chinese_string(FINAL_PAGE_START_X, FINAL_PAGE_START_Y, output_index[0], contest_font, 16);	// å‚æ•°è®¾å®š
 
-	show_final_page_settings_item(0);
+	show_contest_page_settings_item(0);
 
 	while (loop_flag)
 	{
-		// ÏÔÊ¾ÉÁË¸
-		//if (is_change_mod && timerFlag_50ms)
-		if (can_biling && timerFlag_50ms)
+		/// æ˜¾ç¤ºé—ªçƒ ///
+		if (is_change_mode && timerFlag_50ms)
 		{
 			timerFlag_50ms = 0;
 
 			POINT_COLOR = BLACK;
 			switch (cur_row)
 			{
-			case 0:	// 95mm ±ê×¼Ô²Éè¶¨
-				if(is_set_95)
+			case 0:	// 95mm æ ‡å‡†åœ†è®¾å®š
+			case 1:	// 105mm æ ‡å‡†åœ†è®¾å®š
+				y = FINAL_PAGE_START_Y + (cur_row == 1 ? 60 : 30);
+				if (is_blinking)
 				{
-					if (is_biling)
-					{
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8 + 16 + 8, FINAL_PAGE_START_Y + 30, ' ', 16, 0);
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 16 + 16 + 8, FINAL_PAGE_START_Y + 30, ' ', 16, 0);
-					}
-					else
-					{
-						show_chinese_char(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8 + 16 + 8, FINAL_PAGE_START_Y + 30, 1, block_font, 16);		// ¡ö
-					}
+					LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8, y, ' ', 16, 0);
+					LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 16, y, ' ', 16, 0);
 				}
 				else
 				{
-					if (is_biling)
-					{
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8, FINAL_PAGE_START_Y + 30, ' ', 16, 0);
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 16, FINAL_PAGE_START_Y + 30, ' ', 16, 0);
-					}
-					else
-					{
-						show_chinese_char(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8, FINAL_PAGE_START_Y + 30, 0, block_font, 16);		// ¡õ
-					}
+					show_chinese_char(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8, y, (cur_row == 1 ? is_set_105 : is_set_95), block_font, 16);		// â–  æˆ– â–¡
 				}
-				is_biling = !is_biling;
+				is_blinking = !is_blinking;
 				break;
-			case 1:	// 105mm ±ê×¼Ô²Éè¶¨
-				if (is_set_105)
-				{
-					if (is_biling)
-					{
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8 + 16 + 8, FINAL_PAGE_START_Y + 60, ' ', 16, 0);
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 16 + 16 + 8, FINAL_PAGE_START_Y + 60, ' ', 16, 0);
-					}
-					else
-					{
-						show_chinese_char(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8 + 16 + 8, FINAL_PAGE_START_Y + 60, 1, block_font, 16);		// ¡ö
-					}
-				}
+			case 2:	//ç”µæœºè½¬é€Ÿè®¾å®š
+				if (is_blinking)
+					LCD_ShowString(FINAL_PAGE_START_X + output_index[2][0] * 16, FINAL_PAGE_START_Y + 30 * 3, 200, 16, 16, "         ");
 				else
 				{
-					if (is_biling)
-					{
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8, FINAL_PAGE_START_Y + 60, ' ', 16, 0);
-						LCD_ShowChar(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 16, FINAL_PAGE_START_Y + 60, ' ', 16, 0);
-					}
-					else
-					{
-						show_chinese_char(FINAL_PAGE_START_X + 34 + output_index[1][0] * 16 + 8, FINAL_PAGE_START_Y + 60, 0, block_font, 16);		// ¡õ
-					}
+					sprintf(temp_text, "%1.1f rpm", saved_info.motor_rpm/10.0);
+					LCD_ShowString(FINAL_PAGE_START_X + output_index[2][0] * 16, FINAL_PAGE_START_Y + 30 * 3, 200, 16, 16, temp_text);
 				}
-				is_biling = !is_biling;
-				break;
-			case 2:	//µç»ú×ªËÙÉè¶¨
-				if(is_change_mod)
-				{
-					if (is_biling)
-						LCD_ShowString(FINAL_PAGE_START_X + output_index[2][0] * 16, FINAL_PAGE_START_Y + 30 * 3, 200, 16, 16, "         ");
-					else
-					{
-						sprintf(temp_text, "%1.1f rpm", motor_rpm);
-						LCD_ShowString(FINAL_PAGE_START_X + output_index[2][0] * 16, FINAL_PAGE_START_Y + 30 * 3, 200, 16, 16, temp_text);
-					}
-					is_biling = !is_biling;
-				}
+				is_blinking = !is_blinking;
 				break;
 			}
 			POINT_COLOR = BLUE;
@@ -433,192 +408,72 @@ void show_final_page_settings()
 		{
 			timerFlag = 0;
 
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
 			if (kv)
 			{
 				switch (kv)
 				{
 				case KEY_UP:
-				case KEY_DOWN:	// ÉÏÒÆ»òÏÂÒÆ
-					if (is_change_mod)
-					{	// µç»ú×ªËÙĞŞ¸ÄÄ£Ê½
-						if(cur_row == 2)
+				case KEY_DOWN:	// ä¸Šç§»æˆ–ä¸‹ç§»
+					if (cur_row == 2 && is_change_mode)
+					{	// ç”µæœºè½¬é€Ÿä¿®æ”¹æ¨¡å¼
+						while (kv)	// å¾—åˆ°é”®å€¼ (è¿æŒ‰æ–¹å¼)
 						{
-							while (kv)	// µÃµ½¼üÖµ (Á¬°´·½Ê½)
+							kv = KEY_Scan(1);
+
+							if (kv)
 							{
-								kv = KEY_Scan(1);
+								if (kv == KEY_UP)
+									saved_info.motor_rpm += 1;
+								else
+									saved_info.motor_rpm -= 1;
 
-								if (kv)
-								{
-									if (kv == KEY_UP)
-										motor_rpm += 0.1;
-									else
-										motor_rpm -= 0.1;
+								// é™å®š
+								if (saved_info.motor_rpm < 0)
+									saved_info.motor_rpm = 0;
+								else if (saved_info.motor_rpm > 99)
+									saved_info.motor_rpm = 99;
 
-									// ÏŞ¶¨
-									if (motor_rpm < 0)
-										motor_rpm = 0;
-									if (motor_rpm > 9.9)
-										motor_rpm = 9.9;
+								show_contest_page_settings_item(cur_row);	// åˆ·æ–°ç•Œé¢
 
-									show_final_page_settings_item(cur_row);	// Ë¢ĞÂ½çÃæ
-
-									delay_ms(50);
-								}
+								delay_ms(50);
 							}
-							// printf("%f\n", motor_rpm);
-							break;
 						}
-					}
-					else
-					{	// ÇĞ»»Ñ¡Ôñ
-						cur_row = (3 + cur_row + (kv == KEY_DOWN ? 1 : -1)) % 3;
-						if (cur_row == 2)
-							is_change_mod = true;
-						can_biling = true;
-						show_final_page_settings_item(cur_row);	// Ë¢ĞÂ½çÃæ
+						save_info();
+						break;
 					}
 
+					// åˆ‡æ¢é€‰æ‹©
+					cur_row = (3 + cur_row + (kv == KEY_DOWN ? 1 : -1)) % 3;
+					is_change_mode = true;
+					show_contest_page_settings_item(cur_row);	// åˆ·æ–°ç•Œé¢
 					break;
 				case KEY_ENTER:
 					switch(cur_row)
-					{
+					{	// æ ¹æ®å½“å‰è¡Œåæ ‡å¤„ç†ç¡®è®¤é”®
 					case 0:
 						is_set_95 = true;
-						adc_95mm = Get_Adc_Average(ADC_Channel_1, 10);
-						printf("%d\n", adc_95mm);
-						if(adc_95mm && adc_105mm)
-							get_adc_value_pre_mm();
-						can_biling = false;
+						saved_info.adc_95mm = Get_Adc_Average(ADC_Channel_1, 10);
+						printf("%d\n", saved_info.adc_95mm);
+						get_adc_value_pre_mm();
+						is_change_mode = false;
 						break;
 					case 1:
 						is_set_105 = true;
-						adc_105mm = Get_Adc_Average(ADC_Channel_1, 10);
-						printf("%d\n", adc_105mm);
-						if (adc_95mm && adc_105mm)
-							get_adc_value_pre_mm();
-						can_biling = false;
+						saved_info.adc_105mm = Get_Adc_Average(ADC_Channel_1, 10);
+						printf("%d\n", saved_info.adc_105mm);
+						get_adc_value_pre_mm();
+						is_change_mode = false;
 						break;
 					case 2:
-						can_biling = is_change_mod = !is_change_mod;
+						is_change_mode = !is_change_mode;
 						break;
 					}
-					is_biling = false;
-					//can_biling = false;
-					show_final_page_settings_item(cur_row);	// Ë¢ĞÂ½çÃæ
+					is_blinking = false;
+					show_contest_page_settings_item(cur_row);	// åˆ·æ–°ç•Œé¢
 					break;
-				case KEY_LEFT:	// Ä£Ê½Ñ¡Ôñ¼ü
-					//if (!is_change_mod)
-					//{
-						loop_flag = false;
-					//}
-					break;
-				default: break;
-				}
-			}
-		}
-	}
-}
-
-void show_final_page_check()
-{
-	bool loop_flag = true;
-	u8 kv;
-	char temp_text[20];
-
-	u16 start_x[3], start_y[3];
-
-	/// ÏÔÊ¾ÎÄ×Ö ///
-	u16 x = FINAL_PAGE_START_X, y = FINAL_PAGE_START_Y;
-	show_chinese_string(x, y, output_index[3], output_font, 16);	// ²âÁ¿½Ç¶È
-	start_x[0] = x += output_index[3][0] * 16;
-	sprintf(temp_text, "%03d", 0);
-	LCD_ShowString(x, y, 200, 16, 16, temp_text);
-	x += 24;
-	show_chinese_char(x, y, 2, block_font, 16);		// ¡ã
-	x = FINAL_PAGE_START_X;		// x ¸´Î»
-	start_y[0] = y;
-
-	start_y[1] = y += 30;
-	show_chinese_string(x, y, output_index[4], output_font, 16);	// ²âÁ¿°ë¾¶
-	start_x[1] = x += output_index[4][0] * 16;
-	sprintf(temp_text, "%03.1f mm", 0.0);
-	LCD_ShowString(x, y, 200, 16, 16, temp_text);
-
-
-	/// »­×ø±êÖá ///
-	x = FINAL_PAGE_START_X+5;
-	y += 30;
-	LCD_DrawLine(x, y, x, y+120);				// yÖá£¬ ÉÏÏÂ¸÷Ô¤Áô 10 ÏñËØ
-	LCD_DrawLine(x, y + 60, x + 190, y + 60);	// xÖá
-	// »­¼ıÍ·
-	LCD_DrawLine(x, y, x - 3, y + 5);
-	LCD_DrawLine(x, y, x + 3, y + 5);
-	LCD_DrawLine(x + 190, y+60, x + 185, y + 57);
-	LCD_DrawLine(x + 190, y+60, x + 185, y + 63);
-	start_x[2] = x;
-	start_y[2] = y + 60;
-
-	// ÖØÉè±àÂëÆ÷Öµ
-	encoder_count = 0;
-	TIM_SetCounter(TIM4, 0);
-
-	while (loop_flag)
-	{
-		if (timerFlag)
-		{
-			timerFlag = 0;
-
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
-			if (kv)
-			{
-				switch (kv)
-				{
-				case KEY_RIGHT:	// ²âÊÔ°´¼ü
-					// µç»ú PWM
-					TIM_Cmd(TIM3, ENABLE);  //Ê¹ÄÜ 
-					TIM_SetCompare2(TIM3, motor_rpm * 10);
-
-					TIM_Cmd(TIM4, ENABLE);	// ´ò¿ªÕı½»±àÂëÆ÷
-
-					u16 cur_angle = 0;				// µ±Ç°»­µ½µÄ½Ç¶È
-					u16 cur_encoder_count = 0;		// µ±Ç°½Ç¶È
-					while(kv)
-					{
-						kv = KEY_Scan(1);	// Á¬°´¼ì²â
-
-						current_adc_value = Get_Adc_Average(ADC_Channel_1, 5);	// Ë¢ĞÂµ±Ç° ADC Öµ
-
-						// ÏÔÊ¾²âÁ¿°ë¾¶
-						sprintf(temp_text, "%03.1f mm   ", get_shifted_value_final(current_adc_value));
-						LCD_ShowString(start_x[1], start_y[1], 200, 16, 16, temp_text);
-
-						if(cur_encoder_count != encoder_count)
-						{	// ½öÔÚ½Ç¶ÈÓĞ±ä»¯Ê±½øĞĞ´¦Àí
-							cur_encoder_count = encoder_count;
-
-							// Ë¢ĞÂ²âÁ¿½Ç¶È
-							sprintf(temp_text, "%03d", encoder_count);
-							LCD_ShowString(start_x[0], start_y[0], 20, 16, 16, temp_text);
-
-							// »­µã ÒòÖĞ¶ÏÓĞÑÓÊ±£¬½«Î»ÒÆÖµ±£´æÔÚÊı×éÖĞ²¢Ê¹ÓÃÑ­»·»­³ö
-							for (; cur_angle <= encoder_count; cur_angle += 2)
-							{
-								y = start_y[2] + 50 - angle_shifted_base95[cur_angle] * 20; // ÏÔÊ¾·¶Î§ 47.5~52.5 ×óÓÒ / ÓÃ 100 ÏÔÊ¾ 5 ·¶Î§ĞèÒª³ËÒÔ 20
-								LCD_DrawPoint(start_x[2] + cur_angle / 2, y);
-							}
-						}
-					}
-
-					// ¹Ø±Õµç»ú pwm
-					TIM_SetCompare2(TIM3, 0);
-					TIM_Cmd(TIM3, DISABLE);
-
-					TIM_Cmd(TIM4, DISABLE);	// ¹Ø±ÕÕı½»±àÂëÆ÷
-					break;
-				case KEY_LEFT:	// Ä£Ê½Ñ¡Ôñ¼ü
+				case KEY_LEFT:	// æ¨¡å¼é€‰æ‹©é”®
 					loop_flag = false;
 					break;
 				default: break;
@@ -628,11 +483,137 @@ void show_final_page_check()
 	}
 }
 
-void show_final_first_page()
+/*!
+ * @fn	void show_contest_page_measurement()
+ *
+ * @brief	ç«èµ›ä½¿ç”¨ - æµ‹é‡ç•Œé¢
+ *
+ * @author	Hintay
+ * @date	2018/4/21
+ */
+
+void show_contest_page_measurement()
+{
+	bool loop_flag = true;
+	u8 kv;
+	char temp_text[20];
+
+	u16 start_x[3], start_y[3];
+
+	/// æ˜¾ç¤ºæ–‡å­— ///
+	u16 x = FINAL_PAGE_START_X, y = FINAL_PAGE_START_Y;
+	show_chinese_string(x, y, output_index[3], contest_font, 16);	// æµ‹é‡è§’åº¦
+	start_x[0] = x += output_index[3][0] * 16;
+	sprintf(temp_text, "%03d", 0);
+	LCD_ShowString(x, y, 200, 16, 16, temp_text);
+	x += 24;
+	show_chinese_char(x, y, 2, block_font, 16);		// Â°
+	x = FINAL_PAGE_START_X;		// x å¤ä½
+	start_y[0] = y;
+
+	start_y[1] = y += 30;
+	show_chinese_string(x, y, output_index[4], contest_font, 16);	// æµ‹é‡åŠå¾„
+	start_x[1] = x += output_index[4][0] * 16;
+	sprintf(temp_text, "%03.1f mm", 0.0);
+	LCD_ShowString(x, y, 200, 16, 16, temp_text);
+
+
+	/// ç”»åæ ‡è½´ ///
+	x = FINAL_PAGE_START_X+5;
+	y += 30;
+	LCD_DrawLine(x, y, x, y+120);				// yè½´ï¼Œ ä¸Šä¸‹å„é¢„ç•™ 10 åƒç´ 
+	LCD_DrawLine(x, y + 60, x + 190, y + 60);	// xè½´
+	// ç”»ç®­å¤´
+	LCD_DrawLine(x, y, x - 3, y + 5);
+	LCD_DrawLine(x, y, x + 3, y + 5);
+	LCD_DrawLine(x + 190, y+60, x + 185, y + 57);
+	LCD_DrawLine(x + 190, y+60, x + 185, y + 63);
+	start_x[2] = x;
+	start_y[2] = y + 60;
+
+	// é‡è®¾ç¼–ç å™¨å€¼
+	encoder_count = 0;
+	TIM_SetCounter(TIM5, 0);
+
+	while (loop_flag)
+	{
+		if (timerFlag)
+		{
+			timerFlag = 0;
+
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
+			if (kv)
+			{
+				switch (kv)
+				{
+				case KEY_RIGHT:	// æµ‹è¯•æŒ‰é”®
+					// ç”µæœº PWM
+					TIM_Cmd(TIM3, ENABLE);
+					TIM_SetCompare2(TIM3, saved_info.motor_rpm);
+
+					TIM_Cmd(TIM5, ENABLE);	// æ‰“å¼€æ­£äº¤ç¼–ç å™¨
+
+					u16 cur_angle = 0;				// å½“å‰ç”»åˆ°çš„è§’åº¦
+					u16 cur_encoder_count = 0;		// å½“å‰è§’åº¦
+					while(kv)
+					{
+						kv = KEY_Scan(1);	// ä½¿ç”¨è¿æŒ‰æ£€æµ‹
+
+						current_adc_value = Get_Adc_Average(ADC_Channel_1, 5);	// åˆ·æ–°å½“å‰ ADC å€¼
+
+						// æ˜¾ç¤ºæµ‹é‡åŠå¾„
+						sprintf(temp_text, "%03.1f mm         ", get_shifted_value_base_95mm(current_adc_value));
+						LCD_ShowString(start_x[1], start_y[1], 200, 16, 16, temp_text);
+
+						if(cur_encoder_count != encoder_count)
+						{	// ä»…åœ¨è§’åº¦æœ‰å˜åŒ–æ—¶è¿›è¡Œå¤„ç†
+							cur_encoder_count = encoder_count;
+
+							// åˆ·æ–°æµ‹é‡è§’åº¦
+							sprintf(temp_text, "%03d", encoder_count);
+							LCD_ShowString(start_x[0], start_y[0], 20, 16, 16, temp_text);
+
+							// ç”»ç‚¹ å› ä¸­æ–­æœ‰å»¶æ—¶ï¼Œå°†ä½ç§»å€¼ä¿å­˜åœ¨æ•°ç»„ä¸­å¹¶ä½¿ç”¨å¾ªç¯ç”»å‡º
+							for (; cur_angle <= encoder_count; cur_angle += 2)
+							{
+								printf("%f\n", angle_shifted_base95[cur_angle]);
+								y = start_y[2] + 50 - angle_shifted_base95[cur_angle] * 20; // æ˜¾ç¤ºèŒƒå›´ 47.5~52.5 å·¦å³ / ç”¨ 100 æ˜¾ç¤º 5 èŒƒå›´éœ€è¦ä¹˜ä»¥ 20
+								LCD_DrawPoint(start_x[2] + cur_angle / 2, y);
+							}
+						}
+					}
+
+					// å…³é—­ç”µæœº PWM
+					TIM_SetCompare2(TIM3, 0);
+					TIM_Cmd(TIM3, DISABLE);
+
+					TIM_Cmd(TIM5, DISABLE);	// å…³é—­æ­£äº¤ç¼–ç å™¨
+					break;
+				case KEY_LEFT:	// æ¨¡å¼é€‰æ‹©é”®
+					loop_flag = false;
+					break;
+				default: break;
+				}
+			}
+		}
+	}
+}
+
+/*!
+ * @fn	void show_contest_first_page()
+ *
+ * @brief	ç«èµ›ä½¿ç”¨ - é¦–é¡µ
+ *
+ * @author	Hintay
+ * @date	2018/4/28
+ */
+
+void show_contest_first_page()
 {
 	u8 kv;
 
-	// ÏÔÊ¾±êÌâ
+	// æ˜¾ç¤ºé¦–é¡µæ ‡é¢˜
 	POINT_COLOR = DARKBLUE;
 	for (u8 i = 0; i < main_title_font.data_len; i++)
 		show_chinese_char(40 + main_title_font.font_size * i, 130, i, main_title_font.titile_font_data, main_title_font.font_size);
@@ -645,24 +626,24 @@ void show_final_first_page()
 		{
 			timerFlag = 0;
 
-			/// °´¼üÉ¨Ãè ///
-			kv = KEY_Scan(0);	//µÃµ½¼üÖµ
+			/// æŒ‰é”®æ‰«æ ///
+			kv = KEY_Scan(0);	//å¾—åˆ°é”®å€¼
 			if (kv)
 			{
 				switch (kv)
 				{
-				case KEY_LEFT:	// Ä£Ê½Ñ¡Ôñ¼ü
+				case KEY_LEFT:	// æ¨¡å¼é€‰æ‹©é”®
 					while (true)
-					{
+					{	// ä»…åœ¨æ¥ä¸‹æ¥çš„ä¸¤ä¸ªé¡µé¢ä¸­å¾ªç¯ï¼Œä¸å†æ˜¾ç¤ºç¬¬ä¸€é¡µ
 						if (timerFlag)
 						{
 							timerFlag = 0;
 
-							LCD_Clear(BACK_COLOR);		// ÇåÆÁ
-							show_final_page_settings();
+							LCD_Clear(BACK_COLOR);		// æ¸…å±
+							show_contest_page_settings();
 
-							LCD_Clear(BACK_COLOR);		// ÇåÆÁ
-							show_final_page_check();
+							LCD_Clear(BACK_COLOR);		// æ¸…å±
+							show_contest_page_measurement();
 						}
 					}
 				default: break;
@@ -672,38 +653,40 @@ void show_final_first_page()
 	}
 }
 
+#endif
 
 int main(void)
 {
-	delay_init();				// ÑÓÊ±º¯Êı³õÊ¼»¯
-	NVIC_Configuration();		// ÉèÖÃNVICÖĞ¶Ï·Ö×é 2:2 Î»ÇÀÕ¼ÓÅÏÈ¼¶£¬2 Î»ÏìÓ¦ÓÅÏÈ¼¶
-	uart_init(9600);			// ´®¿Ú³õÊ¼»¯Îª 9600
-	LED_Init();					// LED ¶Ë¿Ú³õÊ¼»¯
+	delay_init();				// å»¶æ—¶å‡½æ•°åˆå§‹åŒ–
+	NVIC_Configuration();		// è®¾ç½®NVICä¸­æ–­åˆ†ç»„ 2:2 ä½æŠ¢å ä¼˜å…ˆçº§ï¼Œ2 ä½å“åº”ä¼˜å…ˆçº§
+	uart_init(9600);			// ä¸²å£åˆå§‹åŒ–ä¸º 9600
+	LED_Init();					// LED ç«¯å£åˆå§‹åŒ–
 	LCD_Init();
-	Adc_Init();					// ADC ³õÊ¼»¯
-	KEY_Init();					// ³õÊ¼»¯Óë°´¼üÁ¬½ÓµÄÓ²¼ş½Ó¿Ú
-	AT24CXX_Init();				// IIC ³õÊ¼»¯
+	Adc_Init();					// ADC åˆå§‹åŒ–
+	KEY_Init();					// åˆå§‹åŒ–ä¸æŒ‰é”®è¿æ¥çš„ç¡¬ä»¶æ¥å£
 
-	// Çå³ı IIC ÖĞµÄĞÅÏ¢ - ¸´Î»ÓÃ
-	//save_info();
-	read_info();	// ¶ÁÈ¡ IIC ÖĞµÄĞÅÏ¢
+	AT24CXX_Init();				// IIC åˆå§‹åŒ–
+	//save_info();				// æ¸…é™¤ IIC ä¸­çš„ä¿¡æ¯ - å¤ä½ç”¨
+	read_info();				// è¯»å– IIC ä¸­çš„ä¿¡æ¯
 
-	Encoder_Init();				// ³õÊ¼»¯¼ÆÊıÆ÷
-	//OUT_Init();
+	Encoder_Init();				// åˆå§‹åŒ–è®¡æ•°å™¨
+	Motor_Init();				// ç”µæœºæ§åˆ¶ç«¯å£åˆå§‹åŒ–
 
-	// PWM Éè¶¨
+	// PWM è®¾å®š
 	TIM3_PWM_Init(100, 0);
-	TIM_SetCompare2(TIM3, 0);	// ¹Ø±Õ¶Ë¿Ú
+	TIM_SetCompare2(TIM3, 0);	// é»˜è®¤é«˜ç”µå¹³
+	TIM_Cmd(TIM3, DISABLE);		// å…³é—­ PWM
 
-	/// ³õÊ¼»¯¶¨Ê±Æ÷ÓÃÓÚÊ±¼äÊ¹ÓÃ - 50ms ///
-	TIM4_Int_Init(4999,719);	//100KhzµÄ¼ÆÊıÆµÂÊ£¬¼ÆÊıµ½5000Îª50ms
-
-	get_adc_value_pre_mm();
+	/// åˆå§‹åŒ–å®šæ—¶å™¨ç”¨äºæ—¶é—´ä½¿ç”¨ - 50ms ///
+	TIM4_Int_Init(4999,719);	//100Khzçš„è®¡æ•°é¢‘ç‡ï¼Œè®¡æ•°åˆ°5000ä¸º50ms
 
 	while(true)
-	{
-		show_final_first_page();
-		//show_lcd_select_page(main_page);	// ²âÊÔÓÃ
+	{	// é˜²è·‘é£
+#if TEST_MODE
+		show_lcd_select_page(main_page);	// æµ‹è¯•ç”¨
+#else
+		show_contest_first_page();
+#endif
 	}
 }
 

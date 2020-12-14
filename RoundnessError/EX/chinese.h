@@ -1,3 +1,12 @@
+﻿/*!
+* @file	EX\chinese.h.
+*
+* @brief	通用中文字模显示头文件
+*
+* @author	Hintay
+* @date		2018/4/21
+*/
+
 #ifndef __CHINESE_H
 #define __CHINESE_H	 
 #include "sys.h"

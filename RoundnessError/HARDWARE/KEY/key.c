@@ -1,46 +1,45 @@
-/*!
+ï»¿/*!
  * @file	HARDWARE\KEY\key.c.
  *
- * @brief	°´¼üÇı¶¯´úÂë
+ * @brief	æŒ‰é”®é©±åŠ¨ä»£ç 
  */
 
 #include "key.h"
 #include "sys.h" 
 #include "delay.h"
-								    
-//°´¼ü³õÊ¼»¯º¯Êı
-void KEY_Init(void) //IO³õÊ¼»¯
+
+// æŒ‰é”®åˆå§‹åŒ–
+void KEY_Init(void) //IOåˆå§‹åŒ–
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOF, ENABLE);	// Ê¹ÄÜ PORTF Ê±ÖÓ
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOF, ENABLE);	// ä½¿èƒ½ PORTF æ—¶é’Ÿ
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;	//PF 0~4
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //ÉèÖÃ³ÉÉÏÀ­ÊäÈë
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //è®¾ç½®æˆä¸Šæ‹‰è¾“å…¥
 	GPIO_Init(GPIOF, &GPIO_InitStructure);
 }
 
 /*!
  * @fn	u8 KEY_Scan(u8 mode)
  *
- * @brief	°´¼ü´¦Àíº¯Êı
- *			0£¬Ã»ÓĞÈÎºÎ°´¼ü°´ÏÂ 1£¬KEY0°´ÏÂ 2£¬KEY1°´ÏÂ 3£¬KEY2°´ÏÂ 4£¬KEY3°´ÏÂ WK_UP
- * 			×¢Òâ´Ëº¯ÊıÓĞÏìÓ¦ÓÅÏÈ¼¶, KEY0>KEY1>KEY2>KEY3!!
+ * @brief	æŒ‰é”®å¤„ç†å‡½æ•°
+ * 			æ³¨æ„ï¼šæ­¤å‡½æ•°æœ‰å“åº”ä¼˜å…ˆçº§, KEY0 > KEY1 > KEY2 > KEY3 > KEY4!!
  *
  * @author	Hintay
  * @date	2018/4/17
  *
- * @param	mode	·µ»Ø°´¼üÖµ mode:0,²»Ö§³ÖÁ¬Ğø°´;1,Ö§³ÖÁ¬Ğø°´;
+ * @param	mode	0ï¼šä¸æ”¯æŒè¿ç»­æŒ‰ï¼›1ï¼šæ”¯æŒè¿ç»­æŒ‰
  *
- * @return	An u8.
+ * @return	æŒ‰é”®å€¼
  */
 
 u8 KEY_Scan(u8 mode)
 {
-	static u8 key_up = 1;	// °´¼ü°´ËÉ¿ª±êÖ¾
-	if (mode)key_up = 1;	// Ö§³ÖÁ¬°´
+	static u8 key_up = 1;	// æŒ‰é”®æŒ‰æ¾å¼€æ ‡å¿—
+	if (mode)key_up = 1;	// æ”¯æŒè¿æŒ‰
 	if (key_up && (KEY0 == 0 || KEY1 == 0 || KEY2 == 0 || KEY3 == 0 || KEY4 == 0))
 	{
-		delay_ms(10);		//È¥¶¶¶¯ 
+		delay_ms(10);		//å»æŠ–åŠ¨ 
 		key_up = 0;
 		if (KEY0 == 0)
 			return KEY_UP;
@@ -54,5 +53,5 @@ u8 KEY_Scan(u8 mode)
 			return KEY_ENTER;
 	}
 	else if (KEY0 == 1 && KEY1 == 1 && KEY2 == 1 && KEY3 == 1 && KEY4 == 1) key_up = 1;
-	return 0;		// ÎŞ°´¼ü°´ÏÂ
+	return 0;		// æ— æŒ‰é”®æŒ‰ä¸‹
 }

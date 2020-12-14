@@ -16,11 +16,6 @@
 #define LED0 PBout(5)// PB5
 #define LED1 PEout(5)// PE5	
 
-#define MOTOR_CONTORL0 PBout(6)// PB6
-#define MOTOR_CONTORL1 PBout(7)// PB7
-
 void LED_Init(void);//≥ı ºªØ
-void OUT_Init(void);
-
-		 				    
+			    
 #endif

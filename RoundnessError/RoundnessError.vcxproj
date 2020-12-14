@@ -14,7 +14,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6BEEE4BF-9FFF-434F-A8B3-496C6BD699C4}</ProjectGuid>
     <BSP_ID>com.sysprogs.arm.stm32</BSP_ID>
-    <BSP_VERSION>4.6R3</BSP_VERSION>
+    <BSP_VERSION>2020.10</BSP_VERSION>
     <InPlaceBSPSubdir />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -33,12 +33,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>7.2.0/8.0.1/r3</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <IncludePath>.\USER;.\HARDWARE\LED;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\HARDWARE\KEY;.\HARDWARE\LCD;.\HARDWARE\RTC;.\HARDWARE\WKUP;.\HARDWARE\ADC;.\HARDWARE\TIMER;.\HARDWARE\EXTI;.\EX;%(ClCompile.AdditionalIncludeDirectories)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>7.2.0/8.0.1/r3</ToolchainVersion>
+    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
     <IncludePath>.\USER;.\HARDWARE\LED;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\HARDWARE\KEY;.\HARDWARE\LCD;.\HARDWARE\RTC;.\HARDWARE\WKUP;.\HARDWARE\ADC;.\HARDWARE\TIMER;.\HARDWARE\EXTI;.\EX;%(ClCompile.AdditionalIncludeDirectories)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
@@ -101,6 +101,7 @@
     <ClCompile Include="USER\system_stm32f10x.c" />
     <ClInclude Include="EX\chfont.h" />
     <ClInclude Include="EX\chinese.h" />
+    <ClInclude Include="USER\common.h" />
     <ClInclude Include="USER\encoder.h" />
     <ClInclude Include="USER\main.h" />
     <ClInclude Include="USER\shifted.h" />

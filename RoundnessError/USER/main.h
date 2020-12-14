@@ -1,4 +1,5 @@
 #pragma once
+
 #include "sys.h"
 #include "chinese.h"
 #include "chfont.h"
@@ -8,7 +9,9 @@
 #include "24cxx.h"
 #include "math.h"
 #include "usart.h"
+#include "common.h"
 
+#if TEST_MODE
 /// 主界面 ///
 void show_page_adc(void);
 void show_page_counter(void);
@@ -64,15 +67,6 @@ const u8 chinese_menu_index[][10] =
 	{ 4, 0, 1, 2, 3 },	/* 4字, 圆度测量 */
 	{ 4, 4, 5, 6, 7 },	/* 4字, 参数设置 */
 	{ 4, 8, 9, 10, 11 }	/* 4字, 调试菜单 */
-};
-
-const u8 output_index[][10] =
-{
-	{ 5, 0, 1, 2, 3, 4 },		/* 5字, 参数设定： */
-	{ 6, 5, 6, 7, 2, 3, 4 },	/* 6字, 标准圆设定： */
-	{ 5, 8, 9, 10, 11, 4 },		/* 5字, 电机转速： */
-	{ 5, 12, 13, 14, 15, 4 },	/* 5字, 测量角度： */
-	{ 5, 12, 13, 16, 17, 4 },	/* 5字, 测量半径： */
 };
 
 const struct pages_tab pages[] = {
@@ -436,10 +430,6 @@ void show_fake_float(u8 x, u8 y, u8 point_index, u32 num, u8 size, u8 highlight_
 	
 	u8 temp_num, i;
 
-	/*char temp_text[20];
-	sprintf(temp_text, "%ld", num);
-	LCD_ShowString(40, 200, 200, 16, 16, temp_text);*/
-
 	for(i=0; i<size; i++)
 	{
 		temp_num = (num / LCD_Pow(10, size - i -1)) % 10;
@@ -472,36 +462,7 @@ void show_fake_float(u8 x, u8 y, u8 point_index, u32 num, u8 size, u8 highlight_
 	}
 }
 
-/*!
-* @struct	saved_info
-*
-* @brief	用于保存的信息
-*
-* @author	Hintay
-* @date	2018/4/19
-*/
-
-struct saved_info
-{
-	u16 base_shifted_adc;	// 基准位移 ADC 值
-	float allowable_error;	// 允许误差
-	double test_value1;
-	double test_value2;
-};
 struct saved_info saved_info = { 0, 0, 31.567, 3.14159 };
-
-#define SAVED_INFO_SIZE sizeof(saved_info)
-#define SAVED_INFO_START_ADDR 0
-
-void save_info()
-{
-	AT24CXX_Write(SAVED_INFO_START_ADDR, (u8*)&saved_info, SAVED_INFO_SIZE);
-}
-
-void read_info()
-{
-	AT24CXX_Read(SAVED_INFO_START_ADDR, (u8*)&saved_info, SAVED_INFO_SIZE);
-}
 
 /*!
  * @struct	settings_item
@@ -539,13 +500,62 @@ u16 get_decimals_index(double num) {
 		}
 	}
 }
+#else
+struct saved_info saved_info = { 50, 0, 4095, 819.0};
+#endif
 
-float motor_rpm = 5.0;
+void save_info()
+{
+	AT24CXX_Write(SAVED_INFO_START_ADDR, (u8*)&saved_info, SAVED_INFO_SIZE);
+}
 
+void read_info()
+{
+	AT24CXX_Read(SAVED_INFO_START_ADDR, (u8*)&saved_info, SAVED_INFO_SIZE);
+}
+
+// 设定标志位
 bool is_set_95 = false;
 bool is_set_105 = false;
+
+/*! @brief	竞赛使用的字体索引，最多支持 9 个字
+ *			结构为 {索引大小, 第一个字索引, ...}
+ */
+const u8 output_index[][10] =
+{
+	{ 5, 0, 1, 2, 3, 4 },		/* 5字, 参数设定： */
+	{ 6, 5, 6, 7, 2, 3, 4 },	/* 6字, 标准圆设定： */
+	{ 5, 8, 9, 10, 11, 4 },		/* 5字, 电机转速： */
+	{ 5, 12, 13, 14, 15, 4 },	/* 5字, 测量角度： */
+	{ 5, 12, 13, 16, 17, 4 },	/* 5字, 测量半径： */
+};
 
 
 #define FINAL_PAGE_START_X	20
 #define FINAL_PAGE_START_Y	30
+
+/*!
+ * @fn	void Motor_Init(void)
+ *
+ * @brief	电机控制端口初始化
+ *
+ * @author	Hintay
+ * @date	2018/4/21
+ */
+
+void Motor_Init(void)
+{
+	GPIO_InitTypeDef  GPIO_InitStructure;
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);	 //使能PB,PE端口时钟
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;	// PB.6 端口配置
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;		// 推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		// IO口速度为50MHz
+	GPIO_Init(GPIOB, &GPIO_InitStructure);					// 根据设定参数初始化GPIOB.10与11
+	GPIO_SetBits(GPIOB, GPIO_Pin_10);						// PB.10 输出高
+}
+
+#define MOTOR_CONTORL0 PBout(10)		// PB10
+#define MOTOR_CONTORL1 PBout(11)		// PB11
 

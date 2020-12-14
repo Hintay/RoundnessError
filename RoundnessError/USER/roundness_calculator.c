@@ -1,9 +1,28 @@
+/*!
+* @file	USER\roundness_calculator.c.
+*
+* @brief	圆度误差计算函数
+*/
+
 #include "roundness_calculator.h"
 #include "math.h"
 #include "lcd.h"
 #include <stdio.h>
 
-#define RANDOM_SAMPLES 40
+#define RANDOM_SAMPLES 40	// 采样个数
+
+struct roundness_error re_dev;
+
+/*!
+ * @fn	double* generate_random_data()
+ *
+ * @brief	生成一组随机数据
+ *
+ * @author	Hintay
+ * @date	2018/4/18
+ *
+ * @return	Null if it fails, else the random data.
+ */
 
 double* generate_random_data()
 {
@@ -11,14 +30,26 @@ double* generate_random_data()
 	static double offset_list[RANDOM_SAMPLES];
 	for(i=0; i < RANDOM_SAMPLES; i++)
 	{
-		offset_list[i] = random()/1000000000.0;
+#ifdef __GNUC__
+		offset_list[i] = random()/1000000000.0;	// random 函数需要 ARM GCC 库支持
 		//printf("%f, ", offset_list[i]);
+#endif
 	}
-	printf("\r\n");
+	printf("\n");
 	return offset_list;
 }
 
-struct roundness_error re_dev;
+/*!
+ * @fn	void calculate_roundness_error_by_square(double* offset_list, u8 list_len)
+ *
+ * @brief	使用最小二乘圆法计算圆度误差
+ *
+ * @author	Hintay
+ * @date	2018/4/18
+ *
+ * @param [in]	offset_list	如果不为null，则为输入的误差数组
+ * @param 		list_len   	数组的大小
+ */
 
 void calculate_roundness_error_by_square(double* offset_list, u8 list_len)
 {
@@ -46,6 +77,15 @@ void calculate_roundness_error_by_square(double* offset_list, u8 list_len)
 	re_dev.r_min = min_r;
 	re_dev.error = max_r - min_r;
 }
+
+/*!
+ * @fn	void test_calculate_roundness_error(void)
+ *
+ * @brief	使用随机数据测试计算圆度误差
+ *
+ * @author	Hintay
+ * @date	2018/4/18
+ */
 
 void test_calculate_roundness_error(void)
 {

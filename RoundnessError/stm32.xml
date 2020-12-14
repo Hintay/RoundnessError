@@ -2,12 +2,12 @@
 <EmbeddedProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
   <ToolchainVersion>
-    <GCC>7.2.0</GCC>
-    <GDB>8.0.1</GDB>
-    <Revision>3</Revision>
+    <GCC>9.3.1</GCC>
+    <GDB>9.2.0</GDB>
+    <Revision>2</Revision>
   </ToolchainVersion>
   <BspID>com.sysprogs.arm.stm32</BspID>
-  <BspVersion>4.6R3</BspVersion>
+  <BspVersion>2020.10</BspVersion>
   <McuID>STM32F103ZE</McuID>
   <MCUDefinitionFile>STM32F1xxxx/DeviceDefinitions/stm32f103xe.xml</MCUDefinitionFile>
   <MCUProperties>
@@ -33,7 +33,7 @@
   <BSPSourceFolderName>Device-specific files</BSPSourceFolderName>
   <MCUMakFile>stm32.mak</MCUMakFile>
   <ReferencedFrameworks>
-    <string>com.sysprogs.arm.stm32.f1_stdperiph</string>
+    <string>com.sysprogs.arm.stm32.stdperiph</string>
   </ReferencedFrameworks>
   <FrameworkProperties>
     <Entries />
@@ -158,23 +158,24 @@
     </RootDirectory>
     <Configurations>
       <ImportedConfiguration>
+        <IsStaticLibrary>false</IsStaticLibrary>
         <Settings>
           <IncludeDirectories>
-            <string>D:\MCU\RoundnessError\HARDWARE\LED</string>
-            <string>D:\MCU\RoundnessError\SYSTEM\delay</string>
-            <string>D:\MCU\RoundnessError\SYSTEM\sys</string>
-            <string>D:\MCU\RoundnessError\SYSTEM\usart</string>
-            <string>D:\MCU\RoundnessError\USER</string>
-            <string>D:\MCU\RoundnessError\STM32F10x_FWLib\inc</string>
-            <string>D:\MCU\RoundnessError\CORE</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\KEY</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\LCD</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\RTC</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\RTC</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\WKUP</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\ADC</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\TIMER</string>
-            <string>D:\MCU\RoundnessError\HARDWARE\EXTI</string>
+            <string>..\HARDWARE\LED</string>
+            <string>..\SYSTEM\delay</string>
+            <string>..\SYSTEM\sys</string>
+            <string>..\SYSTEM\usart</string>
+            <string>..\USER</string>
+            <string>..\STM32F10x_FWLib\inc</string>
+            <string>..\CORE</string>
+            <string>..\HARDWARE\KEY</string>
+            <string>..\HARDWARE\LCD</string>
+            <string>..\HARDWARE\RTC</string>
+            <string>..\HARDWARE\RTC</string>
+            <string>..\HARDWARE\WKUP</string>
+            <string>..\HARDWARE\ADC</string>
+            <string>..\HARDWARE\TIMER</string>
+            <string>..\HARDWARE\EXTI</string>
           </IncludeDirectories>
           <PreprocessorMacros>
             <string>$$com.sysprogs.bspoptions.primary_memory$$_layout</string>
